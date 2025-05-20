@@ -182,8 +182,7 @@ export default class OrderStatusPath extends LightningElement {
         let cssClasses = 'slds-path__item';
         if (isCurrent) {
             cssClasses += ' slds-is-current slds-is-active';
-        }
-        if (!isCurrent && isCompleted) {
+        } else if (isCompleted) {
             cssClasses += ' slds-is-complete';
         } else {
             cssClasses += ' slds-is-incomplete';
