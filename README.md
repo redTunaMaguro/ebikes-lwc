@@ -203,7 +203,7 @@ This repository contains several tools and scripts that are relevant if you want
 To benefit from these developer tools, you must:
 
 1. install a [Node.js LTS version](https://nodejs.org/en/)
-1. install the Node project dependencies with by running `npm install` in a terminal.
+1. install the Node project dependencies by running `npm install` in a terminal.
 
 For reference, the full list scripts and dependencies and can be found in [package.json](./package.json).
 
