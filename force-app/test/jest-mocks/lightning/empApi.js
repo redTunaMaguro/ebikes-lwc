@@ -17,7 +17,8 @@ const subscribe = jest.fn((channel, replayId, callback) => {
         return Promise.reject(_mockSubscribeError);
     }
     _mockSubscribeCallback = callback;
-    return Promise.resolve();
+    // Return a subscription object similar to the real API
+    return Promise.resolve({ channel });
 });
 
 const unsubscribe = jest.fn(() => {});
