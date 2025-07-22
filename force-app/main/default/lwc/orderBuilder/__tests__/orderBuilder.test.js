@@ -179,6 +179,49 @@ describe('c-order-builder', () => {
         );
     });
 
+    it('calculates summary with null quantities and price', async () => {
+        const partialData = [
+            {
+                Id: '1',
+                Qty_S__c: null,
+                Qty_M__c: 1,
+                Qty_L__c: 1,
+                Price__c: 100,
+                Product__r: {}
+            },
+            {
+                Id: '2',
+                Qty_S__c: 3,
+                Qty_M__c: null,
+                Qty_L__c: null,
+                Price__c: null,
+                Product__r: {}
+            }
+        ];
+        const expectedItems = 5;
+        const expectedSum = 200;
+
+        const element = createElement('c-order-builder', {
+            is: OrderBuilder
+        });
+        element.recordId = mockRecordId;
+        document.body.appendChild(element);
+
+        getOrderItems.emit(partialData);
+
+        await flushPromises();
+
+        const formattedNumberEl = element.shadowRoot.querySelector(
+            'lightning-formatted-number'
+        );
+        expect(formattedNumberEl.value).toBe(expectedSum);
+
+        const orderTotalDivEl = element.shadowRoot.querySelector('div.right');
+        expect(orderTotalDivEl.textContent).toBe(
+            `Total Items: ${expectedItems}`
+        );
+    });
+
     it('displays a panel when no data is returned', async () => {
         // Set values for validating component changes
         const expectedMessage = 'Drag products here to add items to the order';

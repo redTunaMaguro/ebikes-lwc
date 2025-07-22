@@ -32,18 +32,19 @@ const DISCOUNT = 0.6;
  * Gets the quantity of all items in an Order_Item__c SObject.
  */
 function getQuantity(orderItem) {
-    return (
-        getSObjectValue(orderItem, QTY_SMALL_FIELD) +
-        getSObjectValue(orderItem, QTY_MEDIUM_FIELD) +
-        getSObjectValue(orderItem, QTY_LARGE_FIELD)
-    );
+    const qtyS = getSObjectValue(orderItem, QTY_SMALL_FIELD);
+    const qtyM = getSObjectValue(orderItem, QTY_MEDIUM_FIELD);
+    const qtyL = getSObjectValue(orderItem, QTY_LARGE_FIELD);
+
+    return (qtyS ?? 0) + (qtyM ?? 0) + (qtyL ?? 0);
 }
 
 /**
  * Gets the price for the specified quantity of Order_Item__c SObject.
  */
 function getPrice(orderItem, quantity) {
-    return getSObjectValue(orderItem, PRICE_FIELD) * quantity;
+    const price = getSObjectValue(orderItem, PRICE_FIELD);
+    return (price ?? 0) * quantity;
 }
 
 /**
