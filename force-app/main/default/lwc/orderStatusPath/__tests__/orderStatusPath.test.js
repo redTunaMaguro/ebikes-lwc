@@ -2,7 +2,13 @@ import { createElement } from 'lwc';
 import OrderStatusPath from 'c/orderStatusPath';
 import { getObjectInfo, getPicklistValues } from 'lightning/uiObjectInfoApi';
 import { getRecord, updateRecord } from 'lightning/uiRecordApi';
-import { isEmpEnabled, onError, subscribe, empApiMock } from 'lightning/empApi';
+import {
+    isEmpEnabled,
+    onError,
+    subscribe,
+    unsubscribe,
+    empApiMock
+} from 'lightning/empApi';
 
 // Mock realistic data
 const mockGetObjectInfo = require('./data/getObjectInfo.json');
@@ -250,6 +256,26 @@ describe('c-order-status-path', () => {
             );
             expect(errorItem).not.toBeNull();
             expect(errorItem.textContent).toMatch(/failed to subscribe/);
+        });
+
+        it('unsubscribes when the component is removed from the DOM', async () => {
+            const element = createElement('c-order-status-path', {
+                is: OrderStatusPath
+            });
+            document.body.appendChild(element);
+
+            // Emit data from @wire
+            getObjectInfo.emit(mockGetObjectInfo);
+            getPicklistValues.emit(mockGetPicklistValues);
+            getRecord.emit(mockGetRecord);
+
+            // Wait for subscription to be set
+            await flushPromises();
+
+            // Remove element to trigger disconnectedCallback
+            document.body.removeChild(element);
+
+            expect(unsubscribe).toHaveBeenCalled();
         });
     });
 
